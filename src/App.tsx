@@ -31,6 +31,7 @@ const HomePage = () => (
     <Hero />
     <SubHero />
     <VideoSection />
+    <Reservation />
     <Products onAddToCart={() => {}} />
   </>
 );
