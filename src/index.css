@@ -129,6 +129,10 @@
     border-color: var(--luxury-gold);
   }
   
+  .section-container {
+    @apply max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20;
+  }
+  
   .parallax-bg {
     background-attachment: fixed;
     background-size: cover;

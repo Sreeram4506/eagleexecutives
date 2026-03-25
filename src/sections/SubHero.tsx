@@ -113,7 +113,7 @@ const SubHero = () => {
         }}
       />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20">
+      <div className="section-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content Side */}
           <div
@@ -149,7 +149,7 @@ const SubHero = () => {
           </div>
 
           {/* Image Side */}
-          <div className="relative h-[500px] md:h-[600px] lg:h-[700px]" style={{ perspective: '1200px' }}>
+          <div className="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[700px]" style={{ perspective: '1200px' }}>
             {/* Main Image */}
             {subHeroConfig.image1 && (
               <div
@@ -207,44 +207,24 @@ const SubHero = () => {
                 />
               </div>
             )}
-
-            {/* Decorative line */}
-            <div
-              className="absolute top-[10%] left-[-5%] w-32 h-32 border border-[#d4af37]/20"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0.6) rotate(-12deg)',
-                transition: 'all 1.2s cubic-bezier(0.33, 1, 0.68, 1) 1s',
-              }}
-            />
-
-            {/* Floating accent dot */}
-            <div
-              className="absolute bottom-[15%] right-[-3%] w-4 h-4 rounded-full bg-[#d4af37]/40"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'scale(1)' : 'scale(0)',
-                transition: 'all 0.8s cubic-bezier(0.33, 1, 0.68, 1) 1.4s',
-              }}
-            />
           </div>
         </div>
       </div>
 
       {/* Stats Section */}
       {subHeroConfig.stats.length > 0 && (
-        <div ref={statsRef} className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20 mt-20 lg:mt-32">
+        <div ref={statsRef} className="section-container mt-20 lg:mt-32">
           <div
-            className={`grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center transition-all duration-700 delay-300 ${
+            className={`grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 text-center transition-all duration-700 delay-300 ${
               statsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             {subHeroConfig.stats.map((stat, index) => (
-              <div key={index} className={`p-6 ${index < subHeroConfig.stats.length - 1 ? 'border-r border-[#d4af37]/10' : ''}`}>
-                <span className="block font-serif text-4xl md:text-5xl text-[#d4af37] mb-2">
+              <div key={index} className={`p-6 border-b md:border-b-0 ${index < subHeroConfig.stats.length - 1 ? 'md:border-r border-[#d4af37]/10' : ''}`}>
+                <span className="block font-serif text-3xl md:text-5xl text-[#d4af37] mb-2">
                   {statCounters[index]}{stat.suffix}
                 </span>
-                <span className="text-gray-500 text-sm tracking-wide uppercase">{stat.label}</span>
+                <span className="text-gray-500 text-[10px] md:text-xs tracking-[0.2em] font-black uppercase">{stat.label}</span>
               </div>
             ))}
           </div>

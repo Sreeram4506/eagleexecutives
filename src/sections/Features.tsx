@@ -51,7 +51,7 @@ const Features = () => {
       />
 
       {/* Section Header */}
-      <div className="max-w-[1400px] mx-auto px-6 mb-20">
+      <div className="section-container mb-20">
         <div className="text-center">
           <span
             className={`inline-block mb-4 text-xs tracking-[0.4em] text-[#d4af37] font-medium uppercase transition-all duration-700 ${
@@ -67,7 +67,7 @@ const Features = () => {
             style={{ transitionDelay: '100ms' }}
           />
           <h2
-            className={`font-serif text-5xl md:text-6xl text-white mb-8 transition-all duration-700 ${
+            className={`font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-8 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ transitionDelay: '200ms' }}
@@ -75,7 +75,7 @@ const Features = () => {
             Unrivaled Executive Services
           </h2>
           <p
-            className={`max-w-3xl mx-auto text-gray-400 text-lg md:text-xl font-light leading-relaxed transition-all duration-700 ${
+            className={`max-w-3xl mx-auto text-gray-400 text-base md:text-lg lg:text-xl font-light leading-relaxed transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ transitionDelay: '400ms' }}
@@ -85,7 +85,7 @@ const Features = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6">
+      <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuresConfig.features.map((service, index) => {
             const IconComponent = iconMap[service.icon];

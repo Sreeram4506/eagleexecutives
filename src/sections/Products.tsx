@@ -74,7 +74,7 @@ const Products = ({ onAddToCart }: ProductsProps) => {
         }}
       />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[60px]">
+      <div className="section-container">
         {/* Header */}
         <div className="text-center mb-12">
           <span
@@ -122,7 +122,7 @@ const Products = ({ onAddToCart }: ProductsProps) => {
                 onClick={() => setActiveCategory(category)}
                 className={`px-6 py-2 text-sm tracking-wide transition-all duration-300 ${
                   activeCategory === category
-                    ? 'bg-[#d4af37] text-black'
+                    ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                     : 'bg-[#1a1a1a] text-gray-400 hover:bg-[#2d2d2d] hover:text-white border border-[#d4af37]/20'
                 }`}
               >
@@ -133,7 +133,7 @@ const Products = ({ onAddToCart }: ProductsProps) => {
         )}
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {filteredProducts.map((product, index) => {
             const details = getVehicleDetails(product.category);
             return (
