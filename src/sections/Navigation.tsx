@@ -40,9 +40,9 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-[80px] px-6 md:px-12 lg:px-20">
           <Link
             to="/"
-            className="flex flex-col sm:block font-serif text-base md:text-xl lg:text-2xl tracking-wide text-white leading-tight"
+            className="flex flex-col font-serif text-[12px] xxs:text-sm xs:text-base md:text-xl lg:text-2xl tracking-wide text-white leading-tight"
           >
-            <span className="text-[#d4af37]">E</span>agle Executive Transport <span>& Security Inc</span>
+            <span className="text-[#d4af37]">E</span>agle Executive Transport <span className="opacity-80">& Security Inc</span>
           </Link>
 
           {/* Desktop Navigation Links */}

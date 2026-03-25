@@ -60,7 +60,7 @@ const ServicesPage = () => (
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#0a0a0a]" lang={siteConfig.language || undefined}>
+      <div className="min-h-screen bg-[#0a0a0a] overflow-x-hidden w-full relative" lang={siteConfig.language || undefined}>
         <ScrollToTop />
         <Navigation />
         <main className="pt-[80px]"> {/* Account for sticky header */}

@@ -525,7 +525,7 @@ const Reservation: React.FC = () => {
                     center={defaultCenter} 
                     zoom={13} 
                     scrollWheelZoom={false}
-                    className="w-full h-full min-h-[300px]"
+                    className="w-full h-full min-h-[300px] max-w-full"
                   >
                     <TileLayer
                       attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
