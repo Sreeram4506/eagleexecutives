@@ -222,6 +222,10 @@ export interface Feature {
   icon: "Truck" | "ShieldCheck" | "Leaf" | "Heart" | "Shield" | "Clock" | "Gem" | "Compass";
   title: string;
   description: string;
+  features?: string[];
+  longDescription?: string;
+  category: "security" | "transport";
+  image?: string;
 }
 
 export interface FeaturesConfig {
@@ -233,42 +237,105 @@ export const featuresConfig: FeaturesConfig = {
     {
       icon: "Shield",
       title: "Executive Protection",
-      description: "Discreet and highly professional security services for high-profile clients, ensuring safety and peace of mind throughout every journey.",
+      description: "The highest level of personal security for clients who require constant, close-range protection for public appearances or private events.",
+      longDescription: "Our Executive Protection services are designed for individuals whose high-profile status or sensitive nature of work requires discreet yet robust security. We provide a comprehensive umbrella of safety that includes risk assessment, advance team coordination, and close-range protection. Our agents are trained to blend into any environment, from corporate boardrooms to red-carpet events, ensuring that your privacy is respected while your safety is guaranteed.",
+      features: [
+        "Law enforcement/Military backgrounds",
+        "Threat mitigation expertise",
+        "24/7 Close-range surveillance"
+      ],
+      category: "security",
+      image: "/images/service-executive.png",
     },
     {
       icon: "ShieldCheck",
       title: "Unarmed Security",
-      description: "A seamless blend of professional driving and discreet personal protection. Ideal for executives, families, and VIPs who value safety and route monitoring without visible weapons.",
+      description: "A seamless blend of professional driving and discreet personal protection. Ideal for executives and families who value safety without visible weapons.",
+      longDescription: "Unarmed security provides a sophisticated layer of protection for those who prioritize a non-confrontational and professional atmosphere. Our agents focus on superior situational awareness, route planning, and conflict de-escalation. This service is particularly popular among families and corporate executives who require a secure environment that remains welcoming to guests and the public, all while maintaining the highest standards of vigilance.",
+      features: [
+        "Non-confrontational protection",
+        "Real-time route monitoring",
+        "Ideal for executives & families"
+      ],
+      category: "security",
+      image: "/images/service-unarmed.png",
     },
     {
       icon: "Shield",
       title: "Armed Security",
       description: "Higher-level protection staffed by licensed professionals trained in firearms and threat response. Designed for high-risk individuals and asset protection.",
+      longDescription: "When the situation demands the highest level of defensive capability, our Armed Security services provide an uncompromising shield. Staffed exclusively by licensed professionals with extensive firearms training and real-world tactical experience, this service is tailored for high-risk individuals, asset transfers, and sensitive corporate sites. We prioritize proactive threat detection and rapid, professional response to ensure that every potential risk is mitigated before it can escalate.",
+      features: [
+        "Licensed & firearm-certified",
+        "Professional hostile response",
+        "Ideal for high-risk individuals"
+      ],
+      category: "security",
+      image: "/images/service-armed.png",
     },
     {
       icon: "ShieldCheck",
       title: "Bodyguard Services",
-      description: "Top-tier personal protection for public appearances or high-risk travel, provided by agents with backgrounds in law enforcement, military, or elite security.",
+      description: "Top-tier personal protection for public appearances or high-risk travel, providing discreet and vigilant security agents.",
+      longDescription: "Our Bodyguard services provide dedicated, individual protection that moves with you. Whether attending a high-stakes meeting, traveling through unfamiliar territories, or appearing at public venues, our bodyguards serve as your personal security detail. They are trained in personal safe-room procedures, crowds and venue management, and emergency medical response, ensuring that you can focus on your agenda while we handle all aspects of your physical security.",
+      features: [
+        "Private escort services",
+        "Discreet travel protection",
+        "Crowd & venue security"
+      ],
+      category: "security",
+      image: "/images/service-bodyguard.png",
     },
     {
       icon: "Truck",
       title: "Airport Transfers",
-      description: "Premium flight tracking and meet-and-greet services at all major airports, providing a seamless transition from terminal to destination.",
+      description: "Premium flight tracking and meet-and-greet services at all major airports, providing a seamless transition.",
+      longDescription: "Experience the ultimate in airport luxury with our comprehensive transfer service. We track your flight in real-time, ensuring your chauffeur is waiting for you the moment you land, regardless of delays or early arrivals. Our 'Meet and Greet' service includes luggage assistance and a seamless transition from the terminal to our waiting premium vehicle, allowing you to start or end your journey in complete comfort and relaxation.",
+      features: [
+          "24/7 Flight tracking",
+          "Meet & Greet service",
+          "Curbside assistance"
+      ],
+      category: "transport",
+      image: "/images/service-airport.png",
     },
     {
       icon: "Clock",
       title: "Hourly Chauffeur",
       description: "Flexible, 'as-directed' services providing you with a dedicated vehicle and chauffeur for as long as your schedule requires.",
+      longDescription: "Our Hourly Chauffeur service is designed for those who require the ultimate flexibility in their schedule. Whether you have multiple meetings across the city, a day of shopping, or a social event with an uncertain end time, our chauffeur remains on standby exclusively for you. You have total control over the itinerary, and our professional driver will be ready to move whenever you are, ensuring that your transportation is the one thing you never have to worry about.",
+      features: [
+          "Total route flexibility",
+          "Dedicated standby vehicle",
+          "Multi-stop capabilities"
+      ],
+      category: "transport",
+      image: "/images/service-hourly.png",
     },
     {
       icon: "Gem",
       title: "VIP Special Events",
       description: "Elevate weddings, galas, and red-carpet events with our flagship limousines and white-glove chauffeur service.",
+      longDescription: "Make every occasion unforgettable with our specialized event services. We provide white-glove treatment for weddings, galas, and high-profile social events. Our team coordinates closely with event planners to ensure synchronized arrivals and departures. Our flagship vehicles are meticulously prepared to meet the highest standards of luxury, ensuring that your arrival is as impressive as the event itself.",
+      features: [
+          "Immaculate fleet prep",
+          "Uniformed chauffeurs",
+          "Champagne service available"
+      ],
+      category: "transport",
+      image: "/images/service-events.png",
     },
     {
       icon: "Compass",
       title: "Long Distance Travel",
-      description: "Luxurious city-to-city transfers that turn a long commute into a relaxing experience with high-speed Wi-Fi and premium amenities.",
+      description: "Luxurious city-to-city transfers that turn a long commute into a relaxing experience with high-speed Wi-Fi.",
+      longDescription: "Ditch the stress of regional flights or train travel with our exclusive Long Distance service. We transform city-to-city commutes into productive and relaxing experiences. Our premium vehicles are equipped with high-speed Wi-Fi, refreshment centers, and ergonomic seating, allowing you to work, rest, or simply enjoy the scenery. Our expert chauffeurs handle all navigation and road conditions, ensuring a safe and timely arrival at your destination.",
+      features: [
+          "State-to-state travel",
+          "Premium vehicle amenities",
+          "Refreshment & entertainment"
+      ],
+      category: "transport",
     },
   ],
 };
@@ -689,7 +756,7 @@ export const locationsConfig: LocationsConfig = {
       title: "Corporate and Business",
       image: "/images/corporate-travel.jpg",
       items: [
-        { id: 701, name: "Boston Convention Center" }, { id: 702, name: "Boston Design Center" },
+        { id: 701, name: "Boston Convention Center" }, { id: 147, name: "Marlborough" },
         { id: 703, name: "Business Meetings" }, { id: 704, name: "Conferences" }
       ]
     },

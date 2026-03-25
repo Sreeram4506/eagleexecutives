@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Truck, ShieldCheck, Shield, Clock, Gem, Compass, ChevronRight, ShieldAlert } from 'lucide-react';
-import { featuresConfig } from '../config';
+import { featuresConfig, type Feature } from '../config';
 import { useNavigate } from 'react-router-dom';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>> = {
   Truck,
@@ -16,6 +23,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?:
 const Features = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedService, setSelectedService] = useState<Feature | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,58 +95,238 @@ const Features = () => {
       </div>
 
       <div className="section-container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuresConfig.features.map((service, index) => {
-            const IconComponent = iconMap[service.icon];
-            return (
-              <div
-                key={service.title}
-                className={`group relative p-10 bg-[#111] border border-gray-800/50 hover:border-[#d4af37]/40 transition-all duration-700 card-hover overflow-hidden rounded-sm ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity duration-700" 
-                  style={{ 
-                    backgroundImage: 'radial-gradient(#d4af37 0.5px, transparent 0.5px)', 
-                    backgroundSize: '20px 20px' 
-                  }} 
-                />
+        {/* Security Services Section */}
+        <div className="mb-20">
+          <div 
+            className={`flex items-center gap-6 mb-10 transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}
+            style={{ transitionDelay: '500ms' }}
+          >
+            <h3 className="font-serif text-2xl md:text-3xl text-white whitespace-nowrap">Security Services</h3>
+            <div className="h-[1px] w-full bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuresConfig.features.slice(0, 4).map((service, index) => {
+              const IconComponent = iconMap[service.icon];
+              return (
+                <div
+                  key={service.title}
+                  onClick={() => setSelectedService(service)}
+                  className={`group relative p-8 bg-[#111] border border-gray-800/50 hover:border-[#d4af37]/40 transition-all duration-700 card-hover overflow-hidden rounded-sm cursor-pointer ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ transitionDelay: `${index * 100 + 600}ms` }}
+                >
+                  <div className="absolute inset-0 opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity duration-700" 
+                    style={{ 
+                      backgroundImage: 'radial-gradient(#d4af37 0.5px, transparent 0.5px)', 
+                      backgroundSize: '20px 20px' 
+                    }} 
+                  />
 
-                {/* Service Icon */}
-                <div className="relative z-10 w-16 h-16 rounded-full flex items-center justify-center bg-black/40 border border-[#d4af37]/20 group-hover:border-[#d4af37] transition-all duration-500 mb-8">
-                  {IconComponent && (
-                    <IconComponent
-                      size={28}
-                      strokeWidth={1}
-                      className="text-[#d4af37]"
+                  <div className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center bg-black/40 border border-[#d4af37]/20 group-hover:border-[#d4af37] transition-all duration-500 mb-6">
+                    {IconComponent && (
+                      <IconComponent
+                        size={24}
+                        strokeWidth={1}
+                        className="text-[#d4af37]"
+                      />
+                    )}
+                  </div>
+
+                  <div className="relative z-10">
+                    <h4 className="font-serif text-xl text-white mb-3 leading-tight group-hover:text-[#d4af37] transition-colors duration-500">
+                      {service.title}
+                    </h4>
+                    <p className="text-gray-400 text-sm leading-relaxed font-light mb-6 group-hover:text-gray-300 transition-colors">
+                      {service.description}
+                    </p>
+                    
+                    {service.features && (
+                      <ul className="mb-8 space-y-2">
+                        {service.features.map((feat) => (
+                          <li key={feat} className="flex items-center gap-2 text-[10px] text-[#d4af37]/70 uppercase tracking-widest font-medium">
+                            <div className="w-1 h-1 bg-[#d4af37] rounded-full" />
+                            {feat}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <button 
+                      onClick={() => navigate('/reservation')}
+                      className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-[#d4af37] hover:text-white transition-all duration-300"
+                    >
+                      Inquire
+                      <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Transportation Services Section */}
+        <div>
+          <div 
+            className={`flex items-center gap-6 mb-10 transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            }`}
+            style={{ transitionDelay: '800ms' }}
+          >
+            <h3 className="font-serif text-2xl md:text-3xl text-white whitespace-nowrap">Transportation Services</h3>
+            <div className="h-[1px] w-full bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuresConfig.features.slice(4).map((service, index) => {
+              const IconComponent = iconMap[service.icon];
+              return (
+                <div
+                  key={service.title}
+                  onClick={() => setSelectedService(service)}
+                  className={`group relative p-8 bg-[#111] border border-gray-800/50 hover:border-[#d4af37]/40 transition-all duration-700 card-hover overflow-hidden rounded-sm cursor-pointer ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ transitionDelay: `${index * 100 + 900}ms` }}
+                >
+                  <div className="absolute inset-0 opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity duration-700" 
+                    style={{ 
+                      backgroundImage: 'radial-gradient(#d4af37 0.5px, transparent 0.5px)', 
+                      backgroundSize: '20px 20px' 
+                    }} 
+                  />
+
+                  <div className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center bg-black/40 border border-[#d4af37]/20 group-hover:border-[#d4af37] transition-all duration-500 mb-6">
+                    {IconComponent && (
+                      <IconComponent
+                        size={24}
+                        strokeWidth={1}
+                        className="text-[#d4af37]"
+                      />
+                    )}
+                  </div>
+
+                  <div className="relative z-10">
+                    <h4 className="font-serif text-xl text-white mb-3 leading-tight group-hover:text-[#d4af37] transition-colors duration-500">
+                      {service.title}
+                    </h4>
+                    <p className="text-gray-400 text-sm leading-relaxed font-light mb-6 group-hover:text-gray-300 transition-colors">
+                      {service.description}
+                    </p>
+
+                    {service.features && (
+                      <ul className="mb-8 space-y-2">
+                        {service.features.map((feat) => (
+                          <li key={feat} className="flex items-center gap-2 text-[10px] text-[#d4af37]/70 uppercase tracking-widest font-medium">
+                            <div className="w-1 h-1 bg-[#d4af37] rounded-full" />
+                            {feat}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <button 
+                      onClick={() => navigate('/reservation')}
+                      className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-[#d4af37] hover:text-white transition-all duration-300"
+                    >
+                      Book Now
+                      <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <Dialog 
+        open={!!selectedService} 
+        onOpenChange={(open) => !open && setSelectedService(null)}
+      >
+        <DialogContent className="sm:max-w-[800px] bg-[#0c0c0c] border-[#d4af37]/20 text-white p-0 overflow-hidden">
+          {selectedService && (
+            <div className="flex flex-col">
+              <DialogHeader className="p-0">
+                <div className="relative w-full aspect-video overflow-hidden group">
+                  {selectedService.image ? (
+                    <img 
+                      src={selectedService.image} 
+                      alt={selectedService.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
+                  ) : (
+                    <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                      <Gem size={48} className="text-white/10" />
+                    </div>
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent opacity-60" />
                 </div>
 
-                <div className="relative z-10">
-                  <h3 className="font-serif text-2xl text-white mb-4 leading-tight group-hover:text-[#d4af37] transition-colors duration-500">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-400 text-base leading-relaxed font-light mb-8 group-hover:text-gray-300 transition-colors">
-                    {service.description}
-                  </p>
+                <div className="p-8 md:p-12 pb-6">
+                  <div className="flex items-center gap-6 mb-8">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black/40 border border-[#d4af37]/20">
+                      {(() => {
+                        const Icon = iconMap[selectedService.icon] || Truck;
+                        return <Icon size={32} strokeWidth={1} className="text-[#d4af37]" />;
+                      })()}
+                    </div>
+                    <div>
+                      <span className="text-[10px] tracking-[0.4em] text-[#d4af37] uppercase font-medium mb-1 block">Elite Standard</span>
+                      <DialogTitle className="font-serif text-3xl md:text-4xl text-white">
+                        {selectedService.title}
+                      </DialogTitle>
+                    </div>
+                  </div>
+                  <div className="gold-line mb-8" />
+                  <DialogDescription className="text-gray-400 text-lg md:text-xl font-light leading-relaxed">
+                    {selectedService.longDescription || selectedService.description}
+                  </DialogDescription>
+                </div>
+              </DialogHeader>
 
-                  {/* Enhanced CTA */}
+              <div className="p-8 md:p-12 pt-6 grid lg:grid-cols-2 gap-12 border-t border-white/5 bg-black/20">
+                <div className="space-y-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4af37]">Core Benefits</h4>
+                  <ul className="space-y-4">
+                    {selectedService.features?.map((feat) => (
+                      <li key={feat} className="flex items-start gap-4 text-sm text-gray-300 font-light group">
+                        <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full mt-1.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="flex flex-col justify-end gap-4 h-full">
+                  <p className="text-[11px] text-gray-500 italic mb-2">
+                    * Available 24/7. Contact us for custom arrangements and specific equipment requirements.
+                  </p>
                   <button 
-                    onClick={() => navigate('/reservation')}
-                    className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.25em] text-[#d4af37] hover:text-white transition-all duration-300 transform"
+                    onClick={() => {
+                      setSelectedService(null);
+                      navigate('/reservation');
+                    }}
+                    className="w-full bg-[#d4af37] hover:bg-white text-black py-4 px-8 text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 outline-none hover:-translate-y-1"
                   >
-                    Inquire Now
-                    <ChevronRight size={14} className="group-hover:translate-x-2 transition-transform duration-300" />
+                    Proceed to Booking
+                  </button>
+                  <button 
+                    onClick={() => setSelectedService(null)}
+                    className="w-full border border-gray-800 hover:border-[#d4af37]/40 py-4 px-8 text-[10px] text-gray-400 uppercase tracking-[0.2em] transition-all duration-300"
+                  >
+                    Return to Services
                   </button>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

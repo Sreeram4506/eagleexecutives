@@ -1,11 +1,29 @@
-import { useEffect, useRef, useState } from 'react';
-import { Shield, ShieldAlert, Users, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { featuresConfig, type Feature } from '../config';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
+
+import { useEffect, useRef, useState } from 'react';
+import { ChevronRight, Shield, ShieldAlert, ShieldCheck } from 'lucide-react';
+
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+};
 
 const Security = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedService, setSelectedService] = useState<Feature | null>(null);
   const navigate = useNavigate();
+
+  const securityServices = featuresConfig.features.filter(f => f.category === 'security');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,38 +43,6 @@ const Security = () => {
     return () => observer.disconnect();
   }, []);
 
-  const securityServices = [
-    {
-      title: "Unarmed Security",
-      icon: Shield,
-      description: "A seamless blend of professional driving and discreet personal protection. Designed for clients who value safety, comfort, and discretion without visible weapons.",
-      features: [
-        "Non-confrontational protection",
-        "Real-time route monitoring",
-        "Ideal for executives & families"
-      ]
-    },
-    {
-      title: "Armed Security",
-      icon: ShieldAlert,
-      description: "Higher-level protection for clients requiring enhanced safety during travel - staffed by licensed professionals trained in firearms and threat response.",
-      features: [
-        "Licensed & firearm-certified",
-        "Professional hostile response",
-        "Ideal for high-risk individuals"
-      ]
-    },
-    {
-      title: "Executive Protection",
-      icon: Users,
-      description: "The highest level of personal security for clients who require constant, close-range protection for public appearances or private events.",
-      features: [
-        "Law enforcement/Military backgrounds",
-        "Threat mitigation expertise",
-        "24/7 Close-range surveillance"
-      ]
-    }
-  ];
 
   return (
     <section
@@ -92,33 +78,37 @@ const Security = () => {
             </p>
 
             <div className="space-y-6">
-              {securityServices.map((service, idx) => (
-                <div 
-                  key={service.title}
-                  className="group flex gap-6 p-6 bg-white/5 border border-white/10 hover:border-[#d4af37]/30 transition-all duration-500 rounded-sm"
-                  style={{ transitionDelay: `${idx * 200}ms` }}
-                >
-                  <div className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center bg-black/40 border border-[#d4af37]/20 group-hover:border-[#d4af37] transition-all duration-500">
-                    <service.icon size={22} className="text-[#d4af37]" />
+              {securityServices.map((service, idx) => {
+                const Icon = iconMap[service.icon] || Shield;
+                return (
+                  <div 
+                    key={service.title}
+                    onClick={() => setSelectedService(service)}
+                    className="group flex gap-6 p-6 bg-white/5 border border-white/10 hover:border-[#d4af37]/30 transition-all duration-500 rounded-sm cursor-pointer"
+                    style={{ transitionDelay: `${idx * 200}ms` }}
+                  >
+                    <div className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center bg-black/40 border border-[#d4af37]/20 group-hover:border-[#d4af37] transition-all duration-500">
+                      <Icon size={22} className="text-[#d4af37]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-serif text-white mb-2 group-hover:text-[#d4af37] transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                        {service.description}
+                      </p>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {service.features?.map(feat => (
+                          <li key={feat} className="flex items-center gap-2 text-[11px] text-[#d4af37]/70 uppercase tracking-widest font-medium">
+                            <div className="w-1 h-1 bg-[#d4af37] rounded-full" />
+                            {feat}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-serif text-white mb-2 group-hover:text-[#d4af37] transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                      {service.description}
-                    </p>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {service.features.map(feat => (
-                        <li key={feat} className="flex items-center gap-2 text-[11px] text-[#d4af37]/70 uppercase tracking-widest font-medium">
-                          <div className="w-1 h-1 bg-[#d4af37] rounded-full" />
-                          {feat}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <button 
@@ -152,6 +142,84 @@ const Security = () => {
 
         </div>
       </div>
+      <Dialog 
+        open={!!selectedService} 
+        onOpenChange={(open) => !open && setSelectedService(null)}
+      >
+        <DialogContent className="sm:max-w-[700px] bg-[#0c0c0c] border-[#d4af37]/20 text-white p-8 md:p-12">
+          {selectedService && (
+            <>
+              <DialogHeader>
+                <div className="relative w-full aspect-video mb-8 overflow-hidden border border-white/5 group">
+                  {selectedService.image ? (
+                    <img 
+                      src={selectedService.image} 
+                      alt={selectedService.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                      <Shield size={48} className="text-white/10" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent opacity-60" />
+                </div>
+
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black/40 border border-[#d4af37]/20">
+                    {(() => {
+                      const Icon = iconMap[selectedService.icon] || Shield;
+                      return <Icon size={32} className="text-[#d4af37]" />;
+                    })()}
+                  </div>
+                  <div>
+                    <span className="text-[10px] tracking-[0.4em] text-[#d4af37] uppercase font-medium mb-1 block">Security Protocols</span>
+                    <DialogTitle className="font-serif text-3xl md:text-4xl text-white">
+                      {selectedService.title}
+                    </DialogTitle>
+                  </div>
+                </div>
+                <div className="gold-line mb-8" />
+                <DialogDescription className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-10">
+                  {selectedService.longDescription || selectedService.description}
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="mt-4 grid lg:grid-cols-2 gap-12 border-t border-white/5 pt-10">
+                <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4af37] mb-6">Service Standards</h4>
+                  <ul className="space-y-4">
+                    {selectedService.features?.map((feat) => (
+                      <li key={feat} className="flex items-start gap-4 text-sm text-gray-300 font-light group">
+                        <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full mt-1.5 flex-shrink-0 group-hover:scale-125 transition-transform" />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="flex flex-col justify-end gap-4">
+                  <button 
+                    onClick={() => {
+                      setSelectedService(null);
+                      navigate('/reservation');
+                    }}
+                    className="w-full bg-[#d4af37] hover:bg-white text-black py-4 px-8 text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 outline-none"
+                  >
+                    Request Custom Plan
+                  </button>
+                  <button 
+                    onClick={() => setSelectedService(null)}
+                    className="w-full border border-gray-800 hover:border-[#d4af37]/40 py-4 px-8 text-[10px] text-gray-400 uppercase tracking-[0.2em] transition-all duration-300"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
