@@ -3,16 +3,36 @@ import { aboutConfig } from '../config';
 
 interface AboutSectionProps {
   id: string;
-  image: string;
-  contentBg: string;
-  textColor: string;
+  section: typeof aboutConfig.sections[0];
   reverse?: boolean;
-  children: React.ReactNode;
 }
 
-const AboutSection = ({ id, image, contentBg, textColor, reverse, children }: AboutSectionProps) => {
+const useParallax = () => {
+  const [offset, setOffset] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      if (rect.top < windowH && rect.bottom > 0) {
+        const progress = (windowH - rect.top) / (windowH + rect.height);
+        setOffset((progress - 0.5) * 80); // Parallax strength
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return { ref, offset };
+};
+
+const AboutSection = ({ id, section, reverse }: AboutSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { ref: imgRef, offset } = useParallax();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,7 +42,7 @@ const AboutSection = ({ id, image, contentBg, textColor, reverse, children }: Ab
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
 
     if (sectionRef.current) {
@@ -40,23 +60,76 @@ const AboutSection = ({ id, image, contentBg, textColor, reverse, children }: Ab
     >
       {/* Image Side */}
       <div
-        className={`w-full lg:w-3/5 h-[50vh] lg:h-auto min-h-[400px] bg-cover bg-center md:bg-fixed transition-all duration-1000 ${
-          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-        }`}
-        style={{ backgroundImage: `url(${image})` }}
-      />
+        ref={imgRef}
+        className="w-full lg:w-3/5 h-[60vh] lg:h-auto min-h-[400px] overflow-hidden relative shadow-2xl"
+      >
+        <div
+          className={`absolute inset-0 bg-cover bg-center transition-all duration-[1.5s] ease-out-expo ${
+            isVisible ? 'scale-100 opacity-100' : 'scale-110 opacity-0'
+          }`}
+          style={{ 
+            backgroundImage: `url(${section.image})`,
+            transform: `scale(1.1) translateY(${offset}px)`,
+          }}
+        />
+        {/* Luxury Overlay */}
+        <div 
+          className={`absolute inset-0 bg-black/20 transition-opacity duration-1000 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        {/* Highlight Reveal */}
+        <div 
+          className={`absolute inset-0 bg-[#d4af37]/5 transition-all duration-[1.4s] ${
+            isVisible ? 'translate-x-full' : 'translate-x-0'
+          } z-10`}
+          style={{ transitionDelay: '0.2s' }}
+        />
+      </div>
 
       {/* Content Side */}
       <div
-        className="w-full lg:w-2/5 flex items-center justify-center p-8 md:p-12 lg:p-16"
-        style={{ backgroundColor: contentBg, color: textColor }}
+        className="w-full lg:w-2/5 flex items-center justify-center p-8 md:p-16 lg:p-20 relative z-10"
+        style={{ backgroundColor: section.backgroundColor, color: section.textColor }}
       >
         <div
-          className={`max-w-md transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`max-w-md transition-all duration-1000 cubic-bezier(0.23, 1, 0.32, 1)`}
         >
-          {children}
+          <div className={`transition-all duration-1000 delay-[200ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <span className="inline-block mb-4 text-xs tracking-[0.3em] font-medium uppercase text-[#d4af37]">
+              {section.tag}
+            </span>
+            <div className="gold-line mb-6" />
+          </div>
+
+          <h2 className={`font-serif text-3xl md:text-[40px] leading-tight mb-6 text-white transition-all duration-1000 delay-[400ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            {section.heading}
+          </h2>
+
+          {section.quote ? (
+            <div className={`transition-all duration-1000 delay-[600ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <p className="text-lg font-light leading-relaxed text-gray-300 mb-6 italic">
+                &ldquo;{section.quote}&rdquo;
+              </p>
+              {section.attribution && (
+                <p className="text-base font-light text-[#d4af37]">
+                  {section.attribution}
+                </p>
+              )}
+            </div>
+          ) : (
+            section.paragraphs.map((paragraph, pIndex) => (
+              <p 
+                key={pIndex} 
+                className={`text-lg font-light leading-relaxed text-gray-400 mb-6 transition-all duration-1000 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                }`}
+                style={{ transitionDelay: `${600 + pIndex * 150}ms` }}
+              >
+                {paragraph}
+              </p>
+            ))
+          )}
         </div>
       </div>
     </div>
@@ -72,37 +145,9 @@ const About = () => {
         <AboutSection
           key={index}
           id={`about-${index}`}
-          image={section.image}
-          contentBg={section.backgroundColor}
-          textColor={section.textColor}
+          section={section}
           reverse={index % 2 !== 0}
-        >
-          <span className="inline-block mb-4 text-xs tracking-[0.3em] font-medium uppercase text-[#d4af37]">
-            {section.tag}
-          </span>
-          <div className="gold-line mb-6" />
-          <h2 className="font-serif text-3xl md:text-[40px] leading-tight mb-6 text-white">
-            {section.heading}
-          </h2>
-          {section.quote ? (
-            <>
-              <p className="text-lg font-light leading-relaxed text-gray-300 mb-6 italic">
-                &ldquo;{section.quote}&rdquo;
-              </p>
-              {section.attribution && (
-                <p className="text-base font-light text-[#d4af37]">
-                  {section.attribution}
-                </p>
-              )}
-            </>
-          ) : (
-            section.paragraphs.map((paragraph, pIndex) => (
-              <p key={pIndex} className="text-lg font-light leading-relaxed text-gray-400 mb-6">
-                {paragraph}
-              </p>
-            ))
-          )}
-        </AboutSection>
+        />
       ))}
 
       {/* Vertical Navigation Dots */}
