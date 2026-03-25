@@ -221,7 +221,7 @@ const Reservation: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="p-5 md:p-8">
             {/* Step Indicators */}
             <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-50 pb-6">
               <StepIndicator stepId={1} title="Ride Info" />
@@ -349,33 +349,37 @@ const Reservation: React.FC = () => {
                       </button>
                     </div>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                       {productsConfig.products.map((vehicle) => (
                         <div 
                           key={vehicle.id}
                           onClick={() => setSelectedVehicle(vehicle)}
                           className={`relative cursor-pointer group rounded-lg border-2 transition-all overflow-hidden ${
                             selectedVehicle?.id === vehicle.id 
-                              ? 'border-[#d4af37] bg-gray-50 shadow-md' 
+                              ? 'border-[#d4af37] shadow-lg ring-1 ring-[#d4af37]' 
                               : 'border-gray-100 hover:border-[#d4af37]/30 bg-white'
                           }`}
                         >
-                          <div className="aspect-[16/9] overflow-hidden">
+                          <div className="aspect-[16/9] relative overflow-hidden">
                             <img 
                               src={vehicle.image} 
                               alt={vehicle.name} 
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             />
-                          </div>
-                          <div className="p-3">
-                            <div className="flex justify-between items-center mb-1">
-                              <h4 className="font-bold text-gray-900 text-sm">{vehicle.name}</h4>
-                              {selectedVehicle?.id === vehicle.id && (
-                                <div className="bg-[#d4af37] text-black rounded-full p-0.5 animate-in zoom-in">
-                                  <Check size={12} />
-                                </div>
-                              )}
+                            {/* Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            
+                            {/* Name on Picture */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3">
+                              <h4 className="font-bold text-white text-sm md:text-base tracking-wide uppercase">{vehicle.name}</h4>
                             </div>
+
+                            {/* Selection Checkmark on Image */}
+                            {selectedVehicle?.id === vehicle.id && (
+                              <div className="absolute top-2 right-2 bg-[#d4af37] text-black rounded-full p-1 shadow-lg animate-in zoom-in border border-black/10">
+                                <Check size={14} strokeWidth={4} />
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
