@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
 import { footerConfig } from '../config';
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>> = {
@@ -11,18 +10,6 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?:
 
 const Footer = () => {
   if (!footerConfig.brandName) return null;
-
-  const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setIsSubscribed(true);
-      setEmail('');
-      setTimeout(() => setIsSubscribed(false), 3000);
-    }
-  };
 
   return (
     <footer className="bg-[#0a0a0a] py-16 md:py-24 border-t border-[#d4af37]/10">
@@ -73,39 +60,7 @@ const Footer = () => {
             </div>
           ))}
 
-          {/* Newsletter */}
-          {footerConfig.newsletterHeading && (
-            <div className="lg:col-span-1">
-              <h4 className="font-sans text-sm font-medium uppercase tracking-wider mb-6 text-white">{footerConfig.newsletterHeading}</h4>
-              <p className="text-gray-400 text-sm font-light mb-4">
-                {footerConfig.newsletterDescription}
-              </p>
-              <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder={footerConfig.newsletterPlaceholder}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-[#d4af37]/20 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#d4af37] transition-colors"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="flex items-center justify-center gap-2 px-6 py-3 btn-primary text-sm"
-                >
-                  {isSubscribed ? (
-                    <span>{footerConfig.newsletterSuccessText}</span>
-                  ) : (
-                    <>
-                      <span>{footerConfig.newsletterButtonText}</span>
-                      <ArrowRight size={14} />
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
-          )}
+
         </div>
 
         {/* Bottom Section */}

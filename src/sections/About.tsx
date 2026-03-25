@@ -40,7 +40,9 @@ const AboutSection = ({ id, image, contentBg, textColor, reverse, children }: Ab
     >
       {/* Image Side */}
       <div
-        className="w-full lg:w-3/5 h-[50vh] lg:h-auto min-h-[400px] bg-cover bg-center lg:bg-fixed"
+        className={`w-full lg:w-3/5 h-[50vh] lg:h-auto min-h-[400px] bg-cover bg-center md:bg-fixed transition-all duration-1000 ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+        }`}
         style={{ backgroundImage: `url(${image})` }}
       />
 

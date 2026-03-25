@@ -493,11 +493,11 @@ export interface FooterConfig {
 export const footerConfig: FooterConfig = {
   brandName: "Eagle Executive Transport & Security Inc",
   brandDescription: "Premium chauffeur services for discerning clients. Experience luxury transportation redefined.",
-  newsletterHeading: "Stay Updated",
-  newsletterDescription: "Subscribe to receive exclusive offers and updates from Eagle Executive Transport & Security Inc.",
-  newsletterPlaceholder: "Enter your email",
-  newsletterButtonText: "Subscribe",
-  newsletterSuccessText: "Thank you for subscribing!",
+  newsletterHeading: "",
+  newsletterDescription: "",
+  newsletterPlaceholder: "",
+  newsletterButtonText: "",
+  newsletterSuccessText: "",
   linkGroups: [
     {
       title: "Services",
