@@ -54,6 +54,8 @@ const Products = ({ onAddToCart }: ProductsProps) => {
         return { passengers: '6-7', luggage: '5', amenity: 'Entertainment' };
       case 'Limousines':
         return { passengers: '8-10', luggage: '4', amenity: 'Bar' };
+      case 'Sprinters':
+        return { passengers: '8-12', luggage: '10', amenity: 'Custom Coach' };
       default:
         return { passengers: '4', luggage: '3', amenity: 'Comfort' };
     }

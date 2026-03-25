@@ -169,7 +169,7 @@ export const productsConfig: ProductsConfig = {
   viewAllText: "View All Vehicles",
   addToCartText: "Book This Vehicle",
   addedToCartText: "Added to Booking",
-  categories: ["All", "Sedans", "SUVs", "Limousines"],
+  categories: ["All", "Sedans", "SUVs", "Limousines", "Sprinters"],
   products: [
     { 
       id: 1, 
@@ -205,6 +205,13 @@ export const productsConfig: ProductsConfig = {
       price: 0, 
       category: "Limousines", 
       image: "/images/fleet-limousine.jpg" 
+    },
+    { 
+      id: 6, 
+      name: "MERCEDES SPRINTER EXECUTIVE COACH", 
+      price: 0, 
+      category: "Sprinters", 
+      image: "/images/fleet-sprinter.png" 
     },
   ],
 };
