@@ -52,10 +52,11 @@
   
   html {
     scroll-behavior: smooth;
+    @apply snap-y snap-mandatory;
   }
   
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground scroll-smooth;
     font-family: var(--font-sans);
     font-weight: 300;
     line-height: 1.6;
