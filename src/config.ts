@@ -7,8 +7,8 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  title: "Eagle Executive Transport & Security Inc | Luxury Chauffeur Service",
-  description: "Experience unparalleled luxury transportation with Eagle Executive Transport & Security Inc. Premium chauffeur services for airport transfers, corporate travel, weddings, and special events. Book your elite journey today.",
+  title: "Eagle Executive Transport & Security Inc | Premier Luxury Chauffeur & Private Security",
+  description: "Experience unparalleled luxury transportation and professional private security with Eagle Executive Transport & Security Inc. Premium chauffeur services for airport transfers, corporate travel, and elite protection. Available 24/7 in Massachusetts and beyond.",
   language: "en",
 };
 
@@ -71,11 +71,11 @@ export interface HeroConfig {
 }
 
 export const heroConfig: HeroConfig = {
-  tagline: "Premium Chauffeur Services",
-  title: "Travel in\nUnparalleled\nLuxury",
-  ctaPrimaryText: "Book Your Ride",
+  tagline: "Elite Chauffeur & Protection Services",
+  title: "Premium\nExecutive\nSecurity & Travel",
+  ctaPrimaryText: "Book Your Journey",
   ctaPrimaryTarget: "#reservation",
-  ctaSecondaryText: "Explore Fleet",
+  ctaSecondaryText: "View Our Fleet",
   ctaSecondaryTarget: "#fleet",
   backgroundImage: "/images/hero-car.jpg",
 };
