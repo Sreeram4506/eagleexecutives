@@ -236,14 +236,24 @@ export const featuresConfig: FeaturesConfig = {
       description: "Discreet and highly professional security services for high-profile clients, ensuring safety and peace of mind throughout every journey.",
     },
     {
-      icon: "Truck",
-      title: "Airport Transfers",
-      description: "Premium flight tracking and meet-and-greet services at all major airports, providing a seamless transition from terminal to destination.",
+      icon: "ShieldCheck",
+      title: "Unarmed Security",
+      description: "A seamless blend of professional driving and discreet personal protection. Ideal for executives, families, and VIPs who value safety and route monitoring without visible weapons.",
+    },
+    {
+      icon: "Shield",
+      title: "Armed Security",
+      description: "Higher-level protection staffed by licensed professionals trained in firearms and threat response. Designed for high-risk individuals and asset protection.",
     },
     {
       icon: "ShieldCheck",
-      title: "Corporate Excellence",
-      description: "Tailored transportation solutions for the modern executive, prioritizing punctuality, discretion, and a mobile office environment.",
+      title: "Bodyguard Services",
+      description: "Top-tier personal protection for public appearances or high-risk travel, provided by agents with backgrounds in law enforcement, military, or elite security.",
+    },
+    {
+      icon: "Truck",
+      title: "Airport Transfers",
+      description: "Premium flight tracking and meet-and-greet services at all major airports, providing a seamless transition from terminal to destination.",
     },
     {
       icon: "Clock",
@@ -503,6 +513,7 @@ export const footerConfig: FooterConfig = {
       title: "Services",
       links: [
         { label: "Airport Transfers", href: "/services" },
+        { label: "Private Security", href: "/services#security" },
         { label: "Corporate Travel", href: "/services" },
         { label: "City to City", href: "/services" },
         { label: "Special Events", href: "/services" },

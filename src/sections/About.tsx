@@ -66,7 +66,7 @@ const AboutSection = ({ id, section, reverse }: AboutSectionProps) => {
         className="w-full lg:w-3/5 h-[65vh] lg:h-auto min-h-[500px] overflow-hidden relative shadow-2xl"
       >
         <div
-          className={`absolute inset-0 bg-cover bg-top transition-opacity duration-[1.5s] ease-out-expo ${
+          className={`absolute inset-0 bg-cover bg-top transition-opacity [transition-duration:1.5s] ease-out-expo ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ 
@@ -104,19 +104,19 @@ const AboutSection = ({ id, section, reverse }: AboutSectionProps) => {
           className="max-w-md w-full"
           style={{ transform: `translateY(${offset * -0.2}px)` }} // Subtle counter-parallax for text
         >
-          <div className={`transition-all duration-1000 delay-[200ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`transition-all duration-1000 [transition-delay:200ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="inline-block mb-4 text-xs tracking-[0.4em] font-medium uppercase text-[#d4af37]">
               {section.tag}
             </span>
             <div className="gold-line mb-8" />
           </div>
 
-          <h2 className={`font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-8 text-white transition-all duration-1000 delay-[400ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <h2 className={`font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-8 text-white transition-all duration-1000 [transition-delay:400ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             {section.heading}
           </h2>
 
           {section.quote ? (
-            <div className={`transition-all duration-1000 delay-[600ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <div className={`transition-all duration-1000 [transition-delay:600ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               <p className="text-xl font-light leading-relaxed text-gray-300 mb-8 italic border-l-2 border-[#d4af37]/30 pl-6">
                 &ldquo;{section.quote}&rdquo;
               </p>

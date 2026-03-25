@@ -12,17 +12,27 @@ import Features from './sections/Features';
 import Blog from './sections/Blog';
 import FAQ from './sections/FAQ';
 import About from './sections/About';
+import Security from './sections/Security';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 import { Toaster } from 'sonner';
 import './App.css';
 
-// Scroll to top on route change
+// Scroll to top or hash on route change
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+  
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+  
   return null;
 };
 
@@ -31,6 +41,7 @@ const HomePage = () => (
     <Hero />
     <SubHero />
     <VideoSection />
+    <Security />
     <Reservation />
     <Products onAddToCart={() => {}} />
   </>
@@ -39,6 +50,7 @@ const HomePage = () => (
 const ServicesPage = () => (
     <>
         <Features />
+        <Security />
         <Products onAddToCart={() => {}} />
         <Blog />
         <FAQ />

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Truck, ShieldCheck, Shield, Clock, Gem, Compass, ChevronRight } from 'lucide-react';
+import { Truck, ShieldCheck, Shield, Clock, Gem, Compass, ChevronRight, ShieldAlert } from 'lucide-react';
 import { featuresConfig } from '../config';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?:
   Truck,
   ShieldCheck,
   Shield,
+  ShieldAlert,
   Clock,
   Gem,
   Compass,
