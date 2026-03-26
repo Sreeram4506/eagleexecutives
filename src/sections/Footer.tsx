@@ -17,8 +17,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <h3 className="font-serif text-xl md:text-2xl mb-6 text-white leading-tight">
-              <span className="text-[#d4af37]">E</span>agle<br className="md:hidden" /> Executive Transport<br /> & Security Inc
+            <h3 className="font-serif text-2xl md:text-5xl mb-6 text-white leading-tight">
+              <span className="text-[#d4af37]">E</span>agle Executive Transport <br />
+              <span className="text-[#d4af37] text-sm md:text-2xl uppercase tracking-[0.4em] font-sans font-black block mt-4">
+                & Security Inc
+              </span>
             </h3>
             <p className="text-gray-400 font-light text-sm leading-relaxed mb-6">
               {footerConfig.brandDescription}

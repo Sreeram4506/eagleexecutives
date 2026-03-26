@@ -40,9 +40,14 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-[80px] px-6 md:px-12 lg:px-20">
           <Link
             to="/"
-            className="flex flex-col font-serif text-[12px] xxs:text-sm xs:text-base md:text-xl lg:text-2xl tracking-wide text-white leading-tight"
+            className="flex flex-col font-serif text-lg xs:text-xl md:text-2xl lg:text-3xl tracking-wide text-white leading-[1.1] group"
           >
-            <span className="text-[#d4af37]">E</span>agle Executive Transport <span className="opacity-80">& Security Inc</span>
+            <span className="whitespace-nowrap">
+              <span className="text-[#d4af37]">E</span>agle Executive Transport
+            </span>
+            <span className="text-[#d4af37] text-[10px] md:text-sm lg:text-base uppercase tracking-[0.3em] font-sans font-black mt-1.5 transition-all group-hover:tracking-[0.4em]">
+              & Security Inc
+            </span>
           </Link>
 
           {/* Desktop Navigation Links */}
