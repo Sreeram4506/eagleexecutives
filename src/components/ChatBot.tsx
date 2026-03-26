@@ -33,6 +33,7 @@ const ChatBot: React.FC = () => {
     setIsLoading(true);
 
     try {
+      console.log("Current Env:", import.meta.env);
       const apiKey = import.meta.env.VITE_NVIDIA_API_KEY;
       
       if (!apiKey) {
