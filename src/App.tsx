@@ -15,6 +15,7 @@ import About from './sections/About';
 import Security from './sections/Security';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
+import ChatBot from './components/ChatBot';
 import { Toaster } from 'sonner';
 import './App.css';
 
@@ -75,6 +76,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <ChatBot />
         <Toaster position="top-right" richColors />
       </div>
     </BrowserRouter>
