@@ -55,12 +55,16 @@ const MapUpdater: React.FC<{ points: [number, number][] }> = ({ points }) => {
   return null;
 };
 
-const Reservation: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+interface ReservationProps {
+  initialVehicle?: typeof productsConfig.products[0] | null;
+}
+
+const Reservation: React.FC<ReservationProps> = ({ initialVehicle }) => {
+  const [currentStep, setCurrentStep] = useState(initialVehicle ? 2 : 1);
   const [passengers, setPassengers] = useState(1);
   const [luggage, setLuggage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   // Step 1: Ride Info State
   const [serviceType, setServiceType] = useState(reservationConfig.serviceTypes[0]);
   const [pickupDate, setPickupDate] = useState('2024-03-24');
@@ -71,7 +75,15 @@ const Reservation: React.FC = () => {
   const [dropoffCoords, setDropoffCoords] = useState<[number, number] | null>(null);
 
   // Step 2: Vehicle Selection State
-  const [selectedVehicle, setSelectedVehicle] = useState<typeof productsConfig.products[0] | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<typeof productsConfig.products[0] | null>(initialVehicle || null);
+
+  // Automatically update selected vehicle if initialVehicle changes
+  useEffect(() => {
+    if (initialVehicle) {
+      setSelectedVehicle(initialVehicle);
+      setCurrentStep(2);
+    }
+  }, [initialVehicle]);
 
   // Step 3: Final Details State
   const [fullName, setFullName] = useState('');

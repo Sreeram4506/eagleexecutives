@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { siteConfig } from './config';
+import type { Product } from './config';
 import Navigation from './sections/Navigation';
 import Hero from './sections/Hero';
 import SubHero from './sections/SubHero';
@@ -37,48 +38,69 @@ const ScrollToTop = () => {
   return null;
 };
 
-const HomePage = () => (
+const HomePage = ({ onFleetSelect }: { onFleetSelect: (p: Product) => void }) => (
   <>
     <Hero />
     <SubHero />
     <VideoSection />
     <Security />
     <Reservation />
-    <Products onAddToCart={() => {}} />
+    <Products onAddToCart={onFleetSelect} />
   </>
 );
 
-const ServicesPage = () => (
+const ServicesPage = ({ onFleetSelect }: { onFleetSelect: (p: Product) => void }) => (
     <>
         <Features />
         <Security />
-        <Products onAddToCart={() => {}} />
+        <Products onAddToCart={onFleetSelect} />
         <Blog />
         <FAQ />
     </>
 );
 
-function App() {
+function AppContent() {
+  const [selectedFleet, setSelectedFleet] = useState<Product | null>(null);
+  const navigate = useNavigate();
+
+  const handleFleetSelection = (product: Product) => {
+    setSelectedFleet(product);
+    navigate('/reservation');
+    // Scroll to section after navigation
+    setTimeout(() => {
+        const element = document.getElementById('reservation');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 100);
+  };
+
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-[#0a0a0a] overflow-x-hidden w-full relative" lang={siteConfig.language || undefined}>
+    <div className="min-h-screen bg-[#0a0a0a] overflow-x-hidden w-full relative" lang={siteConfig.language || undefined}>
         <ScrollToTop />
         <Navigation />
         <main className="pt-[80px]"> {/* Account for sticky header */}
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/reservation" element={<Reservation />} />
-            <Route path="/locations" element={<Locations />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<HomePage />} />
-          </Routes>
+            <Routes>
+                <Route path="/" element={<HomePage onFleetSelect={handleFleetSelection} />} />
+                <Route path="/services" element={<ServicesPage onFleetSelect={handleFleetSelection} />} />
+                <Route path="/reservation" element={<Reservation initialVehicle={selectedFleet} />} />
+                <Route path="/locations" element={<Locations />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<HomePage onFleetSelect={handleFleetSelection} />} />
+            </Routes>
         </main>
         <Footer />
         <ChatBot />
         <Toaster position="top-right" richColors />
-      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
