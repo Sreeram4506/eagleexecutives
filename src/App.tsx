@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { siteConfig } from './config';
 import type { Product } from './config';
@@ -63,19 +63,20 @@ const ServicesPage = ({ onFleetSelect }: { onFleetSelect: (p: Product) => void }
 );
 
 function AppContent() {
-  const [selectedFleet, setSelectedFleet] = useState<Product | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleFleetSelection = (product: Product) => {
-    setSelectedFleet(product);
-    navigate('/reservation');
-    // Scroll to section after navigation
-    setTimeout(() => {
+  const handleFleetSelection = () => {
+    const isHomePage = location.pathname === '/';
+    
+    if (isHomePage) {
         const element = document.getElementById('reservation');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
-    }, 100);
+    } else {
+        navigate('/#reservation');
+    }
   };
 
   return (
@@ -86,7 +87,7 @@ function AppContent() {
             <Routes>
                 <Route path="/" element={<HomePage onFleetSelect={handleFleetSelection} />} />
                 <Route path="/services" element={<ServicesPage onFleetSelect={handleFleetSelection} />} />
-                <Route path="/reservation" element={<Reservation initialVehicle={selectedFleet} />} />
+                <Route path="/reservation" element={<Reservation />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
