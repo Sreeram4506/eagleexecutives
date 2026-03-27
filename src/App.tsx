@@ -14,6 +14,7 @@ import Blog from './sections/Blog';
 import FAQ from './sections/FAQ';
 import About from './sections/About';
 import Security from './sections/Security';
+import Valet from './sections/Valet';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 import ChatBot from './components/ChatBot';
@@ -44,6 +45,7 @@ const HomePage = ({ onFleetSelect }: { onFleetSelect: (p: Product) => void }) =>
     <SubHero />
     <VideoSection />
     <Security />
+    <Valet />
     <Reservation />
     <Products onAddToCart={onFleetSelect} />
   </>
@@ -53,6 +55,7 @@ const ServicesPage = ({ onFleetSelect }: { onFleetSelect: (p: Product) => void }
     <>
         <Features />
         <Security />
+        <Valet />
         <Products onAddToCart={onFleetSelect} />
         <Blog />
         <FAQ />

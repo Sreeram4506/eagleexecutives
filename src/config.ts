@@ -219,12 +219,12 @@ export const productsConfig: ProductsConfig = {
 // ─── Features (Services) ────────────────────────────────────────────────────────────────
 
 export interface Feature {
-  icon: "Truck" | "ShieldCheck" | "Leaf" | "Heart" | "Shield" | "Clock" | "Gem" | "Compass";
+  icon: "Truck" | "ShieldCheck" | "Leaf" | "Heart" | "Shield" | "Clock" | "Gem" | "Compass" | "ParkingCircle" | "Utensils" | "Hospital" | "Hotel" | "Castle" | "PartyPopper" | "Users";
   title: string;
   description: string;
   features?: string[];
   longDescription?: string;
-  category: "security" | "transport";
+  category: "security" | "transport" | "valet";
   image?: string;
 }
 
@@ -336,6 +336,97 @@ export const featuresConfig: FeaturesConfig = {
           "Refreshment & entertainment"
       ],
       category: "transport",
+    },
+    {
+      icon: "Utensils",
+      title: "Restaurant Valet",
+      description: "Elevation of the dining experience with professional, white-glove valet services for premium restaurants and fine dining establishments.",
+      longDescription: "Our restaurant valet services are designed to complement the excellence of your culinary offerings. From the moment guests arrive, they are greeted with professional courtesy and efficient service, ensuring their evening starts and ends on a high note of luxury and convenience.",
+      features: [
+        "Professional front-door greeting",
+        "Expert parking coordination",
+        "Seamless guest arrival/departure"
+      ],
+      category: "valet",
+      image: "/images/valet-restaurant.jpg",
+    },
+    {
+      icon: "Hospital",
+      title: "Healthcare Valet",
+      description: "Compassionate and efficient valet solutions for medical centers and hospitals, prioritizing patient ease and accessibility.",
+      longDescription: "In healthcare settings, we understand that ease and accessibility are paramount. Our valet teams are trained to provide compassionate assistance to patients and visitors, ensuring that parking is never a stressor during medical visits.",
+      features: [
+        "Patient-first service approach",
+        "Wheelchair & mobility assistance",
+        "High-volume traffic management"
+      ],
+      category: "valet",
+      image: "/images/valet-healthcare.jpg",
+    },
+    {
+      icon: "ParkingCircle",
+      title: "Parking Management",
+      description: "Comprehensive parking solutions for commercial and private facilities, optimizing space and ensuring security.",
+      longDescription: "Our parking management services transform standard parking areas into efficient, revenue-optimized assets. We handle everything from staffing and equipment setup to security and traffic flow optimization.",
+      features: [
+        "Space optimization strategies",
+        "Surveillance & lot security",
+        "Automated reporting systems"
+      ],
+      category: "valet",
+      image: "/images/valet-parking.jpg",
+    },
+    {
+      icon: "Gem",
+      title: "Wedding Valet",
+      description: "Sophisticated valet services tailored for weddings, ensuring a grand and organized arrival for all your guests.",
+      longDescription: "Every detail matters on your special day. Our wedding valet service provides a touch of elegance and organization that sets the tone for a beautiful celebration, handling high-volume arrivals with grace and efficiency.",
+      features: [
+        "Uniformed professional staff",
+        "Synchronized guest arrivals",
+        "Custom signage & coordination"
+      ],
+      category: "valet",
+      image: "/images/valet-wedding.jpg",
+    },
+    {
+      icon: "Castle",
+      title: "Country Club Valet",
+      description: "Elite valet parking services for private clubs, reflecting the exclusive and refined standards of your membership.",
+      longDescription: "We provide valet services that mirror the prestige of your country club. Our staff is trained in private club etiquette, ensuring that every member feels valued and recognized from the moment they arrive.",
+      features: [
+        "Member recognition protocols",
+        "Private club etiquette",
+        "Dedicated club-front service"
+      ],
+      category: "valet",
+      image: "/images/valet-club.jpg",
+    },
+    {
+      icon: "PartyPopper",
+      title: "Private Event Valet",
+      description: "Bespoke valet solutions for private parties and corporate events, providing a seamless luxury experience for attendees.",
+      longDescription: "Whether it's an intimate home gathering or a large-scale corporate event, our valet team ensures that the arrival process is flawless. We manage everything from residential street parking to complex venue layouts.",
+      features: [
+        "Intimate & large-scale event support",
+        "Logistics & traffic planning",
+        "Discreet & professional staff"
+      ],
+      category: "valet",
+      image: "/images/valet-private.jpg",
+    },
+    {
+      icon: "Hotel",
+      title: "Hotel Valet",
+      description: "24/7 valet and bellhop services for premium hotels, ensuring guest satisfaction from check-in to check-out.",
+      longDescription: "Our hotel valet programs are built on the pillars of hospitality. We act as an extension of your hotel staff, providing 24/7 support that enhances the guest experience and drives positive reviews.",
+      features: [
+        "24/7 Guest support",
+        "Bellhop & luggage assistance",
+        "Seamless check-in integration"
+      ],
+      category: "valet",
+      image: "/images/valet-hotel.jpg",
     },
   ],
 };
