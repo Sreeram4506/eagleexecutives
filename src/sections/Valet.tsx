@@ -168,59 +168,62 @@ const Valet = () => {
       <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-[#d4af37]/5 to-transparent pointer-events-none" />
 
       <div className="section-container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-start flex-row-reverse">
+        {/* Header Content */}
+        <div className="text-center mb-16 max-w-4xl mx-auto">
+          <span className="inline-block mb-4 text-xs tracking-[0.4em] text-[#d4af37] font-bold uppercase text-glow animate-fade-in">
+            Premier Hospitality Logistics
+          </span>
+          <div className="gold-line mx-auto mb-8" />
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl text-white mb-8 leading-[1.1] animate-fade-up">
+            Elite Valet <span className="text-gradient-gold">Excellence</span>
+          </h2>
+          <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed animate-fade-up" style={{ animationDelay: '200ms' }}>
+            Eagle Executive Transport & Security Inc redefines hospitality through our specialized white-glove valet services. We provide seamless logistical support for high-stakes healthcare facilities, exclusive galas, and luxury hotels.
+          </p>
+        </div>
+
+        {/* Valet Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
+          {valetServices.map((service, idx) => (
+            <ValetCard 
+              key={service.title} 
+              service={service} 
+              idx={idx} 
+              onClick={() => setSelectedService(service)} 
+            />
+          ))}
           
-          {/* Image/Visual Left (Flipped from Security) */}
-          <div className={`hidden lg:block relative ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'} transition-all duration-1000 delay-300`}>
-            <div className="relative aspect-[4/5] overflow-hidden border border-[#d4af37]/20 rounded-sm">
-              <img 
-                src="/images/valet-hero.jpg" 
-                alt="Valet Excellence" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2000ms]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent opacity-40" />
+          {/* CTA Card at the end of the grid */}
+          <div 
+            onClick={() => navigate('/contact')}
+            className="group flex flex-col items-center justify-center gap-4 p-8 bg-[#d4af37]/10 border border-[#d4af37]/20 hover:bg-[#d4af37] transition-all duration-500 rounded-sm cursor-pointer shadow-xl shadow-black/40"
+            style={{ animationDelay: `${valetServices.length * 150}ms` }}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center bg-black/40 border border-white/10 group-hover:border-black transition-all duration-500">
+              <ChevronRight size={28} className="text-[#d4af37] group-hover:text-black" />
             </div>
-            {/* Floating accent box */}
-            <div className="absolute -top-10 -right-10 p-8 bg-[#111] border border-[#d4af37]/30 max-w-[280px] shadow-2xl">
-              <div className="text-[#d4af37] font-serif text-4xl mb-2">1st Class</div>
-              <div className="text-white text-sm tracking-[0.2em] uppercase font-bold">White Glove Hospitality & Logistics</div>
+            <div className="text-center">
+              <h3 className="text-xl font-serif text-white group-hover:text-black transition-colors mb-2">
+                Custom Fleet Solutions
+              </h3>
+              <p className="text-[#d4af37]/70 group-hover:text-black/70 text-xs font-bold uppercase tracking-widest transition-colors">
+                Contact For Inquiry
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Content Right */}
-          <div className={`${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'} transition-all duration-1000`}>
-            <span className="inline-block mb-4 text-xs tracking-[0.4em] text-[#d4af37] font-bold uppercase text-glow">
-              Premier Valet Solutions
-            </span>
-            <div className="gold-line mb-8" />
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-8 leading-[1.1]">
-              First Impressions <br />
-              <span className="text-gradient-gold">Crafted with Precision</span>
-            </h2>
-            <p className="text-gray-400 text-lg mb-12 font-light leading-relaxed max-w-xl">
-              Eagle Executive Transport & Security Inc redefines hospitality through our specialized valet services. Whether it's a high-stakes healthcare facility or an exclusive private gala, our teams provide seamless logistical support with an elite touch.
-            </p>
-
-            <div className="space-y-6">
-              {valetServices.map((service, idx) => (
-                <ValetCard 
-                  key={service.title} 
-                  service={service} 
-                  idx={idx} 
-                  onClick={() => setSelectedService(service)} 
-                />
-              ))}
-            </div>
-
-            <button 
-              onClick={() => navigate('/contact')}
-              className="mt-12 btn-primary group flex items-center gap-3"
-            >
-              Partner with Eagle Valet
-              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+        {/* Optional Branding Visual at bottom */}
+        <div className={`relative w-full h-[300px] overflow-hidden border border-[#d4af37]/20 rounded-sm ${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-1000 delay-500`}>
+          <img 
+            src="/images/valet-hero.jpg" 
+            alt="Valet Excellence" 
+            className="w-full h-full object-cover grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-[2000ms]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-[#d4af37]/30 font-serif text-6xl md:text-9xl uppercase tracking-[0.2em] pointer-events-none select-none">VALET</span>
           </div>
-
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ShoppingBag, Check, Users, Briefcase } from 'lucide-react';
+import { ShoppingBag, Users, Briefcase } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { productsConfig } from '../config';
 import type { Product } from '../config';
 
@@ -10,10 +11,10 @@ interface ProductsProps {
 const Products = ({ onAddToCart }: ProductsProps) => {
   if (!productsConfig.heading && productsConfig.products.length === 0) return null;
 
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState(productsConfig.categories[0] || 'All');
-  const [addedItems, setAddedItems] = useState<number[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,14 +37,6 @@ const Products = ({ onAddToCart }: ProductsProps) => {
   const filteredProducts = activeCategory === productsConfig.categories[0]
     ? productsConfig.products
     : productsConfig.products.filter(p => p.category === activeCategory);
-
-  const handleAddToCart = (product: Product) => {
-    onAddToCart(product);
-    setAddedItems(prev => [...prev, product.id]);
-    setTimeout(() => {
-      setAddedItems(prev => prev.filter(id => id !== product.id));
-    }, 2000);
-  };
 
   // Vehicle details based on type
   const getVehicleDetails = (category: string) => {
@@ -155,26 +148,16 @@ const Products = ({ onAddToCart }: ProductsProps) => {
                   />
 
 
-                  {/* Quick Add Button */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 flex items-center gap-2 text-sm tracking-wide transition-all duration-300 ${
-                      addedItems.includes(product.id)
-                        ? 'bg-green-600 text-white'
-                        : 'bg-[#d4af37] text-black opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#e8c547]'
-                    }`}
+                  {/* Quick Book Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToCart(product);
+                    }}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#d4af37] text-black px-10 py-4 text-[11px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white transition-all duration-300 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 shadow-2xl"
                   >
-                    {addedItems.includes(product.id) ? (
-                      <>
-                        <Check size={16} />
-                        {productsConfig.addedToCartText}
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag size={16} />
-                        {productsConfig.addToCartText}
-                      </>
-                    )}
+                    <ShoppingBag size={14} />
+                    Book Your Appointment
                   </button>
                 </div>
 
@@ -208,7 +191,10 @@ const Products = ({ onAddToCart }: ProductsProps) => {
             }`}
             style={{ transitionDelay: '1200ms' }}
           >
-            <button className="btn-secondary">
+            <button 
+              onClick={() => navigate('/reservation')}
+              className="btn-secondary"
+            >
               {productsConfig.viewAllText}
             </button>
           </div>
