@@ -140,25 +140,29 @@ const Products = ({ onAddToCart }: ProductsProps) => {
                 style={{ transitionDelay: `${800 + index * 100}ms` }}
               >
                 {/* Image Container */}
-                <div className="relative h-[280px] overflow-hidden">
+                <div className="relative h-[300px] overflow-hidden group-hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)] transition-all duration-700">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                   />
-
-
-                  {/* Quick Book Button */}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAddToCart(product);
-                    }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#d4af37] text-black px-10 py-4 text-[11px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white transition-all duration-300 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 shadow-2xl"
-                  >
-                    <ShoppingBag size={14} />
-                    Book Your Appointment
-                  </button>
+                  
+                  {/* Premium Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Centered Book Button */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAddToCart(product);
+                      }}
+                      className="bg-[#d4af37] text-black px-8 py-4 text-[12px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] cursor-pointer"
+                    >
+                      <ShoppingBag size={16} />
+                      Book Your Appointment
+                    </button>
+                  </div>
                 </div>
 
                 {/* Product Info */}
