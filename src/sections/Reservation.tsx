@@ -14,8 +14,10 @@ import {
   ChevronLeft,
   Mail,
   Phone,
-  MessageSquare
+  MessageSquare,
+  Search
 } from 'lucide-react';
+import PlaceAutocomplete from '../components/ui/PlaceAutocomplete';
 import { reservationConfig, emailJSConfig, productsConfig } from '../config';
 
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
@@ -88,30 +90,15 @@ const Reservation: React.FC = () => {
   const incrementLuggage = () => setLuggage(prev => prev + 1);
   const decrementLuggage = () => setLuggage(prev => (prev > 0 ? prev - 1 : 0));
 
-  // Geocoding function using Nominatim
-  const geocode = async (address: string, setCoords: (coords: [number, number] | null) => void) => {
-    if (!address || address.length < 3) return;
-    try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`);
-      const data = await response.json();
-      if (data && data.length > 0) {
-        setCoords([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
-      }
-    } catch (error) {
-      console.error("Geocoding error:", error);
-    }
+  const handlePickupSelect = (lat: number, lon: number, address: string) => {
+    setPickupCoords([lat, lon]);
+    setPickupLocation(address);
   };
 
-  // Debounce geocoding
-  useEffect(() => {
-    const timer = setTimeout(() => geocode(pickupLocation, setPickupCoords), 1000);
-    return () => clearTimeout(timer);
-  }, [pickupLocation]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => geocode(dropoffLocation, setDropoffCoords), 1000);
-    return () => clearTimeout(timer);
-  }, [dropoffLocation]);
+  const handleDropoffSelect = (lat: number, lon: number, address: string) => {
+    setDropoffCoords([lat, lon]);
+    setDropoffLocation(address);
+  };
 
   const handleNextStep = () => {
     if (currentStep === 1) {
@@ -187,17 +174,22 @@ const Reservation: React.FC = () => {
   if (dropoffCoords) points.push(dropoffCoords);
 
   const StepIndicator = ({ stepId, title }: { stepId: number, title: string }) => (
-    <div className={`flex items-center gap-4 p-3 rounded transition-all ${currentStep === stepId ? 'bg-black/5' : 'bg-transparent filter opacity-50 grayscale'}`}>
-      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${currentStep === stepId ? 'border-[#d4af37]' : 'border-gray-400'}`}>
+    <div className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-500 ${currentStep === stepId ? 'bg-white shadow-sm border border-gray-100 translate-y-[-2px]' : 'bg-transparent opacity-40 grayscale'}`}>
+      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${currentStep === stepId ? 'border-[#d4af37] bg-[#d4af37]/5' : 'border-gray-300'}`}>
         {currentStep > stepId ? (
-          <Check size={12} className="text-[#d4af37]" strokeWidth={3} />
+          <Check size={16} className="text-[#d4af37]" strokeWidth={3} />
         ) : (
-          <div className={`w-2 h-2 rounded-full ${currentStep === stepId ? 'bg-[#d4af37]' : 'bg-transparent'}`} />
+          <span className={`text-xs font-black ${currentStep === stepId ? 'text-[#d4af37]' : 'text-gray-400'}`}>{stepId}</span>
         )}
       </div>
-      <span className={`font-bold text-sm md:text-base ${currentStep === stepId ? 'text-black' : 'text-gray-500'}`}>
-        Step {stepId}: {title}
-      </span>
+      <div className="flex flex-col">
+        <span className={`text-[10px] uppercase tracking-[0.2em] font-black ${currentStep === stepId ? 'text-[#d4af37]' : 'text-gray-400'}`}>
+          Step 0{stepId}
+        </span>
+        <span className={`font-serif text-sm md:text-base ${currentStep === stepId ? 'text-black' : 'text-gray-500'}`}>
+          {title}
+        </span>
+      </div>
     </div>
   );
 
@@ -223,10 +215,10 @@ const Reservation: React.FC = () => {
 
           <div className="p-5 md:p-8">
             {/* Step Indicators */}
-            <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-50 pb-6">
-              <StepIndicator stepId={1} title="Ride Info" />
+            <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <StepIndicator stepId={1} title="Location & Service" />
               <StepIndicator stepId={2} title="Select Vehicle" />
-              <StepIndicator stepId={3} title="Final Details" />
+              <StepIndicator stepId={3} title="Contact Details" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -236,95 +228,91 @@ const Reservation: React.FC = () => {
                   <div className="space-y-6 animate-in fade-in duration-500">
                     <div>
                       <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Service Type</label>
-                      <div className="relative">
+                      <div className="relative group">
                         <select 
                           value={serviceType}
                           onChange={(e) => setServiceType(e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded py-2.5 px-3 appearance-none focus:outline-none focus:ring-1 focus:ring-[#d4af37] transition-all text-sm text-gray-900 font-medium"
+                          className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 appearance-none focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 focus:border-[#d4af37] transition-all text-sm text-gray-900 font-semibold shadow-sm group-hover:border-gray-300"
                         >
                           {reservationConfig.serviceTypes.map((type) => (
                             <option key={type} value={type}>{type}</option>
                           ))}
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-[#d4af37] transition-colors" size={16} />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Pick-Up Date</label>
-                        <div className="relative">
+                        <div className="relative group">
                           <input 
                             type="date" 
                             value={pickupDate}
                             onChange={(e) => setPickupDate(e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded py-2.5 px-3 focus:outline-none focus:ring-1 focus:ring-[#d4af37] transition-all text-sm text-gray-900"
+                            className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 focus:border-[#d4af37] transition-all text-sm text-gray-900 font-medium shadow-sm group-hover:border-gray-300"
                           />
-                          <CalendarDays className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                          <CalendarDays className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-[#d4af37] transition-colors" size={16} />
                         </div>
                       </div>
                       <div>
                         <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Pick-Up Time</label>
-                        <div className="relative">
+                        <div className="relative group">
                           <input 
                             type="time" 
                             value={pickupTime}
                             onChange={(e) => setPickupTime(e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded py-2.5 px-3 focus:outline-none focus:ring-1 focus:ring-[#d4af37] transition-all text-sm text-gray-900"
+                            className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 focus:border-[#d4af37] transition-all text-sm text-gray-900 font-medium shadow-sm group-hover:border-gray-300"
                           />
-                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                          <Clock className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-[#d4af37] transition-colors" size={16} />
                         </div>
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Pick-Up Location</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          placeholder="Address, Airport, or Hotel"
+                    <div className="space-y-5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-500 mb-1.5 uppercase tracking-widest">Pick-Up Location</label>
+                        <PlaceAutocomplete 
                           value={pickupLocation}
-                          onChange={(e) => setPickupLocation(e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded py-2.5 px-3 focus:outline-none focus:ring-1 focus:ring-[#d4af37] transition-all text-sm text-gray-900 placeholder:text-gray-400 font-medium"
+                          onChange={setPickupLocation}
+                          onSelect={handlePickupSelect}
+                          placeholder="Airport, Hotel, or Specific Address..."
+                          icon={<Search size={16} />}
                         />
-                        <MapPin className={`absolute right-3 top-1/2 -translate-y-1/2 ${pickupCoords ? 'text-[#d4af37]' : 'text-gray-300'}`} size={16} />
                       </div>
-                    </div>
 
-                    <div>
-                      <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Drop-Off Location</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          placeholder="Destination address"
+                      <div>
+                        <label className="block text-[11px] font-bold text-gray-500 mb-1.5 uppercase tracking-widest">Drop-Off Location</label>
+                        <PlaceAutocomplete 
                           value={dropoffLocation}
-                          onChange={(e) => setDropoffLocation(e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded py-2.5 px-3 focus:outline-none focus:ring-1 focus:ring-[#d4af37] transition-all text-sm text-gray-900 placeholder:text-gray-400 font-medium"
+                          onChange={setDropoffLocation}
+                          onSelect={handleDropoffSelect}
+                          placeholder="Destination Address..."
+                          icon={<MapPin size={16} />}
                         />
-                        <MapPin className={`absolute right-3 top-1/2 -translate-y-1/2 ${dropoffCoords ? 'text-[#d4af37]' : 'text-gray-300'}`} size={16} />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
                       <div>
                         <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Passengers</label>
-                        <div className="flex items-center bg-gray-50 border border-gray-100 rounded h-11 px-3">
+                        <div className="flex items-center bg-gray-50 border border-gray-100 rounded-lg h-12 px-3 focus-within:ring-1 focus-within:ring-[#d4af37]/30 transition-all">
                           <User size={18} className="text-[#d4af37] mr-2" />
                           <div className="flex items-center ml-auto">
-                            <button type="button" onClick={decrementPassengers} className="p-1.5 text-gray-400 hover:text-[#d4af37] transition-colors"><Minus size={14} /></button>
-                            <input type="text" readOnly value={passengers} className="w-8 text-center bg-transparent outline-none font-bold text-gray-900 text-sm" />
-                            <button type="button" onClick={incrementPassengers} className="p-1.5 text-gray-400 hover:text-[#d4af37] transition-colors"><Plus size={14} /></button>
+                            <button type="button" onClick={decrementPassengers} className="p-2 text-gray-400 hover:text-[#d4af37] hover:bg-white rounded transition-all"><Minus size={14} /></button>
+                            <input type="text" readOnly value={passengers} className="w-10 text-center bg-transparent outline-none font-bold text-gray-900 text-sm" />
+                            <button type="button" onClick={incrementPassengers} className="p-2 text-gray-400 hover:text-[#d4af37] hover:bg-white rounded transition-all"><Plus size={14} /></button>
                           </div>
                         </div>
                       </div>
                       <div>
                         <label className="block text-[13px] font-bold text-gray-700 mb-1.5 uppercase">Luggage</label>
-                        <div className="flex items-center bg-gray-50 border border-gray-100 rounded h-11 px-3">
+                        <div className="flex items-center bg-gray-50 border border-gray-100 rounded-lg h-12 px-3 focus-within:ring-1 focus-within:ring-[#d4af37]/30 transition-all">
                           <Briefcase size={18} className="text-[#d4af37] mr-2" />
                           <div className="flex items-center ml-auto">
-                            <button type="button" onClick={decrementLuggage} className="p-1.5 text-gray-400 hover:text-[#d4af37] transition-colors"><Minus size={14} /></button>
-                            <input type="text" readOnly value={luggage} className="w-8 text-center bg-transparent outline-none font-bold text-gray-900 text-sm" />
-                            <button type="button" onClick={incrementLuggage} className="p-1.5 text-gray-400 hover:text-[#d4af37] transition-colors"><Plus size={14} /></button>
+                            <button type="button" onClick={decrementLuggage} className="p-2 text-gray-400 hover:text-[#d4af37] hover:bg-white rounded transition-all"><Minus size={14} /></button>
+                            <input type="text" readOnly value={luggage} className="w-10 text-center bg-transparent outline-none font-bold text-gray-900 text-sm" />
+                            <button type="button" onClick={incrementLuggage} className="p-2 text-gray-400 hover:text-[#d4af37] hover:bg-white rounded transition-all"><Plus size={14} /></button>
                           </div>
                         </div>
                       </div>
